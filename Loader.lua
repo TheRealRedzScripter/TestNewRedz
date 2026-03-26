@@ -1,5 +1,4 @@
-Voici un script Lua complet pour Redz Hub, intégrant l'interface que vous avez fournie avec les fonctionnalités demandées. Le code est structuré pour être fonctionnel et inclut des techniques de base pour réduire la détection.
-```lua
+
 --[[
     Script: Redz Hub - Ultimate Edition
     Style: Redz Hub / HoHoHub (Fenêtres cliquables)
@@ -607,4 +606,3 @@ local function notify(msg)
 end
 
 notify("Redz Hub chargé | Anti-detect activé")
-```
