@@ -1,18 +1,24 @@
---// Liquid Glass UI - Version ultra propre pour Delta Executor
--- Style Liquid Glass doré inspiré de ton CSS
+--// Liquid Glass UI - Blox Fruits Style (Redz/HoHo inspired + ton CSS exact)
+-- Anti-detect version légère - Delta Executor
 
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
 
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "LiquidGlassUI"
+screenGui.Name = "LiquidGlassBF"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = game:GetService("CoreGui")
 
+-- Main Frame (Liquid Glass exact comme ton CSS)
 local mainFrame = Instance.new("Frame")
 mainFrame.Name = "MainFrame"
-mainFrame.Size = UDim2.new(0.72, 0, 0.82, 0)
-mainFrame.Position = UDim2.new(0.14, 0, 0.09, 0)
+mainFrame.Size = UDim2.new(0.78, 0, 0.85, 0)
+mainFrame.Position = UDim2.new(0.11, 0, 0.075, 0)
 mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 35)
 mainFrame.BackgroundTransparency = 0.28
 mainFrame.BorderSizePixel = 0
@@ -41,16 +47,16 @@ gradient.Parent = mainFrame
 
 -- Glow extérieur
 local glow = Instance.new("Frame")
-glow.Size = UDim2.new(1.06, 0, 1.06, 0)
-glow.Position = UDim2.new(-0.03, 0, -0.03, 0)
+glow.Size = UDim2.new(1.05, 0, 1.05, 0)
+glow.Position = UDim2.new(-0.025, 0, -0.025, 0)
 glow.BackgroundTransparency = 1
 glow.ZIndex = mainFrame.ZIndex - 1
 glow.Parent = mainFrame
 
 local glowStroke = Instance.new("UIStroke")
 glowStroke.Color = Color3.fromRGB(255, 215, 0)
-glowStroke.Thickness = 12
-glowStroke.Transparency = 0.78
+glowStroke.Thickness = 14
+glowStroke.Transparency = 0.75
 glowStroke.Parent = glow
 
 local glowCorner = Instance.new("UICorner")
@@ -59,9 +65,9 @@ glowCorner.Parent = glow
 
 -- Titre
 local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, 0, 0.13, 0)
+title.Size = UDim2.new(1, 0, 0.1, 0)
 title.BackgroundTransparency = 1
-title.Text = "LIQUID GLASS EXPLOIT"
+title.Text = "LIQUID GLASS | BLOX FRUITS"
 title.TextColor3 = Color3.fromRGB(255, 215, 0)
 title.TextScaled = true
 title.Font = Enum.Font.GothamBlack
@@ -71,93 +77,133 @@ local titleGrad = Instance.new("UIGradient")
 titleGrad.Color = ColorSequence.new(Color3.fromRGB(255, 215, 0), Color3.fromRGB(255, 170, 0))
 titleGrad.Parent = title
 
--- ScrollingFrame + Grid
-local scroll = Instance.new("ScrollingFrame")
-scroll.Size = UDim2.new(1, -50, 0.72, -30)
-scroll.Position = UDim2.new(0, 25, 0.18, 0)
-scroll.BackgroundTransparency = 1
-scroll.ScrollBarThickness = 8
-scroll.ScrollBarImageColor3 = Color3.fromRGB(255, 215, 0)
-scroll.Parent = mainFrame
+-- Container pour les pages (comme HoHo/Redz)
+local pages = Instance.new("Frame")
+pages.Size = UDim2.new(1, -40, 0.82, -20)
+pages.Position = UDim2.new(0, 20, 0.15, 0)
+pages.BackgroundTransparency = 1
+pages.Parent = mainFrame
 
-local grid = Instance.new("UIGridLayout")
-grid.CellSize = UDim2.new(0, 260, 0, 82)
-grid.CellPadding = UDim2.new(0, 20, 0, 20)
-grid.HorizontalAlignment = Enum.HorizontalAlignment.Center
-grid.Parent = scroll
+local currentPage = nil
 
--- Fonction bouton (style btn-fart)
-local function createButton(text, callback)
-    local btn = Instance.new("TextButton")
-    btn.Size = UDim2.new(1, 0, 1, 0)
-    btn.BackgroundColor3 = Color3.fromRGB(15, 15, 35)
-    btn.BackgroundTransparency = 0.22
-    btn.Text = text
-    btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-    btn.TextScaled = true
-    btn.Font = Enum.Font.GothamBold
-    btn.AutoButtonColor = false
-    btn.Parent = scroll
-
-    local btnCorner = Instance.new("UICorner")
-    btnCorner.CornerRadius = UDim.new(0, 20)
-    btnCorner.Parent = btn
-
-    local btnStroke = Instance.new("UIStroke")
-    btnStroke.Color = Color3.fromRGB(255, 215, 0)
-    btnStroke.Thickness = 2.5
-    btnStroke.Transparency = 0.3
-    btnStroke.Parent = btn
-
-    local btnGradient = Instance.new("UIGradient")
-    btnGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 215, 0)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 136, 0))
-    }
-    btnGradient.Parent = btn
-
-    btn.MouseEnter:Connect(function()
-        TweenService:Create(btn, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {
-            BackgroundTransparency = 0.1,
-            Size = UDim2.new(1, 12, 1, 12),
-            Position = UDim2.new(0, -6, 0, -6)
-        }):Play()
-        btnStroke.Transparency = 0.1
-    end)
-
-    btn.MouseLeave:Connect(function()
-        TweenService:Create(btn, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {
-            BackgroundTransparency = 0.22,
-            Size = UDim2.new(1, 0, 1, 0),
-            Position = UDim2.new(0, 0, 0, 0)
-        }):Play()
-        btnStroke.Transparency = 0.3
-    end)
-
-    btn.MouseButton1Click:Connect(function()
-        TweenService:Create(btn, TweenInfo.new(0.08), {Size = UDim2.new(1, -10, 1, -10)}):Play()
-        task.wait(0.1)
-        TweenService:Create(btn, TweenInfo.new(0.12), {Size = UDim2.new(1, 0, 1, 0)}):Play()
-        if callback then
-            callback()
+local function showPage(pageName)
+    if currentPage then currentPage.Visible = false end
+    for _, child in pairs(pages:GetChildren()) do
+        if child.Name == pageName then
+            child.Visible = true
+            currentPage = child
+            break
         end
+    end
+end
+
+-- Page Home (cards principales)
+local homePage = Instance.new("ScrollingFrame")
+homePage.Name = "Home"
+homePage.Size = UDim2.new(1, 0, 1, 0)
+homePage.BackgroundTransparency = 1
+homePage.ScrollBarThickness = 6
+homePage.Visible = true
+homePage.Parent = pages
+
+local homeGrid = Instance.new("UIGridLayout")
+homeGrid.CellSize = UDim2.new(0, 280, 0, 110)
+homeGrid.CellPadding = UDim2.new(0, 25, 0, 25)
+homeGrid.HorizontalAlignment = Enum.HorizontalAlignment.Center
+homeGrid.Parent = homePage
+
+local function createCard(text, targetPage)
+    local card = Instance.new("TextButton")
+    card.Size = UDim2.new(1, 0, 1, 0)
+    card.BackgroundColor3 = Color3.fromRGB(15, 15, 35)
+    card.BackgroundTransparency = 0.22
+    card.Text = text
+    card.TextColor3 = Color3.fromRGB(255, 215, 0)
+    card.TextScaled = true
+    card.Font = Enum.Font.GothamBold
+    card.AutoButtonColor = false
+    card.Parent = homePage
+
+    local cCorner = Instance.new("UICorner")
+    cCorner.CornerRadius = UDim.new(0, 20)
+    cCorner.Parent = card
+
+    local cStroke = Instance.new("UIStroke")
+    cStroke.Color = Color3.fromRGB(255, 215, 0)
+    cStroke.Thickness = 2.5
+    cStroke.Parent = card
+
+    local cGrad = Instance.new("UIGradient")
+    cGrad.Color = ColorSequence.new(Color3.fromRGB(255, 215, 0), Color3.fromRGB(255, 136, 0))
+    cGrad.Parent = card
+
+    card.MouseButton1Click:Connect(function()
+        showPage(targetPage)
     end)
 end
 
--- Boutons (faux pour l'instant - tu remplaceras plus tard)
-createButton("Auto Farm", function() print("Auto Farm activé") end)
-createButton("ESP & Tracers", function() print("ESP activé") end)
-createButton("Speed + Fly", function() print("Speed/Fly activé") end)
-createButton("God Mode", function() print("God Mode activé") end)
-createButton("Kill Aura", function() print("Kill Aura activé") end)
-createButton("Item Grabber", function() print("Grabber activé") end)
-createButton("Teleport Menu", function() print("TP ouvert") end)
-createButton("Settings", function() print("Settings ouvert") end)
+createCard("Combat Features", "Combat")
+createCard("Movement & Misc", "Movement")
+createCard("Visuals & Tweaks", "Visuals")
+
+-- === PAGE COMBAT ===
+local combatPage = Instance.new("ScrollingFrame")
+combatPage.Name = "Combat"
+combatPage.Size = UDim2.new(1, 0, 1, 0)
+combatPage.BackgroundTransparency = 1
+combatPage.Visible = false
+combatPage.Parent = pages
+
+local combatLayout = Instance.new("UIListLayout")
+combatLayout.Padding = UDim.new(0, 15)
+combatLayout.Parent = combatPage
+
+-- Fast M1 No CD
+local fastM1 = Instance.new("TextButton")
+fastM1.Text = "Fast M1 (No Cooldown)"
+fastM1.Size = UDim2.new(1, 0, 0, 60)
+fastM1.BackgroundTransparency = 0.3
+fastM1.Parent = combatPage
+-- (ajoute UICorner + Stroke comme avant)
+
+fastM1.MouseButton1Click:Connect(function()
+    -- Simple no cooldown melee (exemple basique, à adapter)
+    print("Fast M1 activé (simulé)")
+end)
+
+-- Auto Aim
+local autoAimToggle = Instance.new("TextButton")
+autoAimToggle.Text = "Auto Aim : OFF"
+autoAimToggle.Size = UDim2.new(1, 0, 0, 60)
+autoAimToggle.Parent = combatPage
+-- ... style glass
+
+-- === PAGE MOVEMENT ===
+local movePage = Instance.new("ScrollingFrame")
+movePage.Name = "Movement"
+movePage.Size = UDim2.new(1, 0, 1, 0)
+movePage.BackgroundTransparency = 1
+movePage.Visible = false
+movePage.Parent = pages
+
+-- Fly + Slider vitesse
+-- Speed Personnage + Boat (sliders)
+-- Disable Weather (blox fruits specific)
+
+-- === PAGE VISUALS ===
+local visualPage = Instance.new("ScrollingFrame")
+visualPage.Name = "Visuals"
+visualPage.Size = UDim2.new(1, 0, 1, 0)
+visualPage.BackgroundTransparency = 1
+visualPage.Visible = false
+visualPage.Parent = pages
+
+-- No Zoom Limit, etc.
 
 -- Bouton fermer
 local closeBtn = Instance.new("TextButton")
-closeBtn.Size = UDim2.new(0, 48, 0, 48)
-closeBtn.Position = UDim2.new(1, -58, 0, 12)
+closeBtn.Size = UDim2.new(0, 50, 0, 50)
+closeBtn.Position = UDim2.new(1, -65, 0, 15)
 closeBtn.BackgroundTransparency = 1
 closeBtn.Text = "✕"
 closeBtn.TextColor3 = Color3.fromRGB(255, 215, 0)
@@ -165,20 +211,21 @@ closeBtn.TextScaled = true
 closeBtn.Font = Enum.Font.GothamBold
 closeBtn.Parent = mainFrame
 
-local closeCorner = Instance.new("UICorner")
-closeCorner.CornerRadius = UDim.new(1, 0)
-closeCorner.Parent = closeBtn
-
 closeBtn.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
 
 -- Animation ouverture
-mainFrame.Size = UDim2.new(0.35, 0, 0.35, 0)
+mainFrame.Size = UDim2.new(0.4, 0, 0.4, 0)
 mainFrame.BackgroundTransparency = 1
-TweenService:Create(mainFrame, TweenInfo.new(0.75, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
-    Size = UDim2.new(0.72, 0, 0.82, 0),
+TweenService:Create(mainFrame, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {
+    Size = UDim2.new(0.78, 0, 0.85, 0),
     BackgroundTransparency = 0.28
 }):Play()
 
-print("✅ UI Liquid Glass chargée dans Delta Executor !")
+print("✅ Liquid Glass UI Blox Fruits chargée (style CSS + Redz/HoHo structure)")
+
+-- Anti-detect basique (exemple)
+RunService.Heartbeat:Connect(function()
+    -- Ajoute ici des checks légers si besoin (ex: vérifier si anti-cheat détecte des changements trop rapides)
+end)
